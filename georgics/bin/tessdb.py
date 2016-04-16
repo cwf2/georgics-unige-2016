@@ -115,49 +115,22 @@ class TessDB:
                 return None
     
     
-class TessTextUnit:
-    """Smallest element of text having a canonical locus"""
-    
-    def __init__(self, id=None, loc=None, verse=None):
-        self.id = id
-        self.loc = loc
-        self.verse = verse
-    
-    
-    def from_tuple(self, data):
-        """Get values from a tuple"""
+    def query_name(self, name, match=False):
+        """Return a list of tables matching name"""
         
-        self.id = data[0]
-        self.loc = data[1]
-        self.verse = data[2]
+        op = "="
         
-        return self
-
-
-    def from_xml(self, xml):
-        """Get values from an XML TextUnit element"""
+        if match:
+            op = r"like"
+            name = "{0}%".format(name)
         
-        self.id = int(xml.get("id"))
-        self.loc = str(xml.get("loc"))
-        self.verse = str("".join(xml.itertext()))
+        sql = "select name from sqlite_master where type = \"table\" and name {0} ?".format(op)
+                
+        response = [row[0] for row in 
+            self.connect().execute(sql, [name]).fetchall()
+        ]
         
-        return self
-        
-    
-    def as_tuple(self):
-        """Represent the params as a tuple of values"""
-        
-        return (self.id, self.loc, self.verse)
-    
-    
-    def as_json(self):
-        """Respresent the params as a json dictionary"""
-        
-        return json.dumps({
-            'id': self.id,
-            'loc': self.loc,
-            'verse': self.verse,
-        })
+        return response
 
 
 class TessText:
@@ -294,3 +267,53 @@ class TessText:
         
         return textobj
 
+
+class TessTextUnit:
+    """Smallest element of text having a canonical locus"""
+    
+    def __init__(self, id=None, loc=None, verse=None):
+        self.id = id
+        self.loc = loc
+        self.verse = verse
+    
+    
+    def from_tuple(self, data):
+        """Get values from a tuple"""
+        
+        self.id = data[0]
+        self.loc = data[1]
+        self.verse = data[2]
+        
+        return self
+
+
+    def from_xml(self, xml):
+        """Get values from an XML TextUnit element"""
+        
+        self.id = int(xml.get("id"))
+        self.loc = str(xml.get("loc"))
+        self.verse = str("".join(xml.itertext()))
+        
+        return self
+        
+    
+    def as_tuple(self):
+        """Represent the params as a tuple of values"""
+        
+        return (self.id, self.loc, self.verse)
+    
+    
+    def as_dict(self):
+        """Represent the params as a python dictionary"""
+        
+        return {"id":self.id, "loc":self.loc, "verse":self.verse}
+    
+    
+    def as_json(self):
+        """Respresent the params as a json dictionary"""
+        
+        return json.dumps({
+            'id': self.id,
+            'loc': self.loc,
+            'verse': self.verse,
+        })

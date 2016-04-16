@@ -1,0 +1,18 @@
+upstream _text_server {
+	server unix:/run/uwsgi/app/text_server/socket;
+}
+
+server {
+	listen 80;
+	server_name georgics.tesserae.org;
+	root /vagrant/georgics/html;
+	
+	location / {
+		try_files $uri @uwsgi;
+	}
+	
+	location @uwsgi {
+		include uwsgi_params;
+		uwsgi_pass _text_server;
+	}
+}
