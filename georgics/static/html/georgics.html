@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Intertextes protéens</title>
+        
+		<!-- jQuery -->
+		<script src="/js/jquery-2.2.3.min.js"></script>
+		<!-- other javascript -->
+		<script src="/js/georgics.js"></script>
+		<script type="text/javascript">
+			// Document ready actions
+
+			$(document).ready(function() {
+			   initPage(
+					passage = "vergil.georgics 4.387 4.452",
+					gdocsKey = "1qUbFVc_soR6eO1aTrs5247yZFg07zoXTPL0_FOzIVpA"
+			   );
+			});
+		</script>
+		
+		<!-- custom style -->
+		<link rel="stylesheet" href="/css/style.css"></link>
+		
+	</head>
+	<body>
+		<div id="container-head">
+			<div id="container-title-outer">
+				<div id="container-title-inner">
+					<div id="title">
+						<!-- poem title goes here -->
+					</div>
+				</div>
+			</div>
+			<div id="container-nav-outer">
+				<div id="container-nav-inner">
+					<div id="nav">
+						<div id="btn-show" class="nav-item nav-item-selected">intertextes</div>
+						<div id="btn-sort" class="nav-item">outils</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="container-body">
+			<div id="container-reading-area">
+				<div id="container-target">
+					<table id="text-target">
+						<!-- poem text goes here -->
+					</table>
+				</div>
+			</div>
+			<div id="container-annotation-area">
+				<div id="container-annotations">
+					<!-- notes go here -->
+				</div>
+				<div id="container-toolbox">
+					<!-- controls go here -->
+					<div id="container-sources-list">
+						<table id="sources-list">
+							<thead>
+								<tr>
+									<th></td>
+									<th>texte source</th>
+									<th>intertextes</th>
+								</tr>
+							</thead>
+							<tbody>
+								<!-- itext count by source -->
+							</tbody>
+						</table>
+					</div>
+					</h2>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

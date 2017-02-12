@@ -5,14 +5,28 @@ upstream _text_server {
 server {
 	listen 80;
 	server_name georgics.tesserae.org;
-	root /vagrant/georgics/html;
+	root /vagrant/georgics/static;
+	sendfile off;
 	
-	location / {
-		try_files $uri @uwsgi;
-	}
-	
-	location @uwsgi {
+	location /query/ {
 		include uwsgi_params;
 		uwsgi_pass _text_server;
 	}
+	
+	location /images/ {
+		try_files $uri =404;
+	}
+	
+	location /css/ {
+		try_files $uri =404;
+	}
+	
+	location /js/ {
+		try_files $uri =404;
+	}
+	
+	location / {
+		root /vagrant/georgics/static/html;
+		try_files $uri =404;
+	}	
 }

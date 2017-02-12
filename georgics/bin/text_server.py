@@ -58,6 +58,44 @@ def query_id(name, first, last=None):
     return {"response": response}
 
 
+@app.route("/query/<name>/loc/<first>")
+@app.route("/query/<name>/loc/<first>/<last>")
+def query_loc(name, first, last=None):
+    """Request passage by loc"""
+    
+    # get the id for the requested loc
+    
+    try:
+        text = tessdb.TessDB(_db_name).select_text(name)
+    except tessdb.TextError as err:
+        pass_error(err)
+
+    try:
+        units = text.select_by_loc(first)
+    except tessdb.LocError as err:
+        pass_error(err)
+    
+    units.sort(key=lambda unit: unit.id)
+    
+    first_id = second_id = units[0].id
+    
+    # if two locs requested, get the second id
+    
+    if last is not None:
+        try:
+            units = text.select_by_loc(last)
+        except tessdb.LocError as err:
+            pass_error(err)
+        
+        units.sort(key=lambda unit: unit.id)
+        
+        second_id = units[0].id
+    
+    # retrieve the corresponding set of units
+    
+    return query_id(name, first_id, second_id)
+
+
 #
 # if invoked from the command line, use Bottle's built-in
 # development server to serve the app - not run when launched
